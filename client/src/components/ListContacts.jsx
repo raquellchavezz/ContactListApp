@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import * as ioicons from 'react-icons/io5'
-import Home from '../Home';
-import Student from './Student'; //change to contact
+import Home from '../Home'; //home is a child of listContacts 
+import Contact from './Contact'; //change to contact, this will be a child of listContacts 
+//the states we have here are contacts,editingContact
 
 const ListContacts = () => {
 
@@ -53,7 +54,7 @@ const ListContacts = () => {
 
     //A function to handle the Update functionality
     const onUpdate = (toUpdateContact) => {
-        //console.log(toUpdateStudent);
+        console.log(toUpdateContact);
         setEditingContact(toUpdateContact);
 
     }
