@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import * as ioicons from 'react-icons/io5'
 import Home from '../Home';
-import Student from './Student';
+import Student from './Student'; //change to contact
 
 const ListContacts = () => {
 
@@ -31,30 +31,30 @@ const ListContacts = () => {
     // and also includes the additon of the newContact to the end --> way of appending newContact to exisitng array of contacts 
 
 
-    //A function to control the update in the parent (student component)
+    //A function to control the update in the parent (student component) //change student to contact
     const updateContact= (savedContact) => {
         // console.log("Line 29 savedStudent", savedStudent);
-        // This function should update the whole list of students - 
+        // This function should update the whole list of contacts- 
         loadContacts();
     }
 
     //A function to handle the Delete funtionality
-    const onDelete = (student) => {
+    const onDelete = (contact) => {
         //console.log(student, "delete method")
-        return fetch(`http://localhost:8080/api/students/${student.id}`, {
+        return fetch(`http://localhost:8080/api/contacts/${contact.id}`, {
             method: "DELETE"
         }).then((response) => {
             //console.log(response);
             if (response.ok) {
-                loadStudents();
+                loadContacts();
             }
         })
     }
 
     //A function to handle the Update functionality
-    const onUpdate = (toUpdateStudent) => {
+    const onUpdate = (toUpdateContact) => {
         //console.log(toUpdateStudent);
-        setEditingStudent(toUpdateStudent);
+        setEditingContact(toUpdateContact);
 
     }
 
@@ -63,17 +63,17 @@ const ListContacts = () => {
     return (
         <div className="mybody">
         <div className="list-students">
-            <h2>Techtonica Participants </h2>
+            <h2>Contact List App </h2>
             <ul>
-                {students.map((student) => {
-                    return <li key={student.id}> <Student student={student} toDelete={onDelete} toUpdate={onUpdate} /></li>
+                {contacts.map((contact) => {
+                    return <li key={contact.id}> <Contact contact={contact} toDelete={onDelete} toUpdate={onUpdate} /></li>
                 })}
             </ul>
         </div>
-        <Home key={editingStudent ? editingStudent.id : null} onSaveStudent={onSaveStudent} editingStudent={editingStudent} onUpdateStudent={updateStudent} />
-        </div>
+        <Home key={editingContact ? editingContact.id : null} onSaveContacts={onSaveContacts} editingContact={editingContact} onUpdateContact={updateContact} />
+        </div> //not sure about the onsavecontact(s)
     );
 }
 
 
-export default ListStudents
+export default ListContacts;
