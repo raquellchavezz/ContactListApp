@@ -25,17 +25,23 @@ app.get("/api/contacts", async (req, res) => {
 });
 
 // create the POST request
-app.post("/api/students", async (req, res) => {
+app.post("/api/contacts", async (req, res) => {
   try {
-    const newStudent = {
+    const newContact = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
-      iscurrent: req.body.iscurrent,
+      phonenumber: req.body.phonenumber,
+      email: req.body.email,
     };
     //console.log([newStudent.firstname, newStudent.lastname, newStudent.iscurrent]);
     const result = await db.query(
       "INSERT INTO contacts(firstname, lastname, phonenumber,email) VALUES($1, $2, $3, $4) RETURNING *",
-      [newContact.firstname, newContact.lastname, newContact.iscurrent]
+      [
+        newContact.firstname,
+        newContact.lastname,
+        newContact.phonenumber,
+        newContact.email,
+      ]
     );
     console.log(result.rows[0]);
     res.json(result.rows[0]);
@@ -46,11 +52,11 @@ app.post("/api/students", async (req, res) => {
 });
 
 // delete request for contaacts
-app.delete("/api/students/:contactsId", async (req, res) => {
+app.delete("/api/contacts/:contactsId", async (req, res) => {
   try {
-    const studentId = req.params.studentId;
-    await db.query("DELETE FROM contacts WHERE id=$1", [contactId]);
-    console.log("From the delete request-url", contactId);
+    const contactsId = req.params.contactsId;
+    await db.query("DELETE FROM contacts WHERE id_contact=$1", [contactsId]);
+    console.log("From the delete request-url", contactsId);
     res.status(200).end();
   } catch (e) {
     console.log(e);
