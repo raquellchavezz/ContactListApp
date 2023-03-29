@@ -52,11 +52,11 @@ app.post("/api/contacts", async (req, res) => {
 });
 
 // delete request for contaacts
-app.delete("/api/contacts/:contactsId", async (req, res) => {
+app.delete("/api/contacts/:contactId", async (req, res) => {
   try {
-    const contactsId = req.params.contactsId;
-    await db.query("DELETE FROM contacts WHERE id_contact=$1", [contactsId]);
-    console.log("From the delete request-url", contactsId);
+    const contactId = req.params.contactId;
+    await db.query("DELETE FROM contacts WHERE id_contact=$1", [contactId]);
+    console.log("From the delete request-url", contactId);
     res.status(200).end();
   } catch (e) {
     console.log(e);
@@ -65,7 +65,7 @@ app.delete("/api/contacts/:contactsId", async (req, res) => {
 });
 
 //A put request - Update a contact
-app.put("/api/students/:contactId", async (req, res) => {
+app.put("/api/contacts/:contactId", async (req, res) => {
   //console.log(req.params);
   //This will be the id that I want to find in the DB - the student to be updated
   const contactId = req.params.contactId;
