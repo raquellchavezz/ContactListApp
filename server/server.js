@@ -26,7 +26,7 @@ app.get("/api/contacts", async (req, res) => {
 });
 
 // create the POST request
-app.post("/api/contacts", async (req, res) => {
+app.post("/api/contact", async (req, res) => {
   try {
     const newContact = {
       firstname: req.body.firstname,
@@ -55,7 +55,7 @@ app.post("/api/contacts", async (req, res) => {
 // delete request for contaacts
 app.delete("/api/contacts/:contactId", async (req, res) => {
   try {
-    const contactId = req.params.contactId;
+    const contactId = req.params.contactId; //this grabs the unique identifier from the url aboove in the placeholder
     await db.query("DELETE FROM contacts WHERE id_contact=$1", [contactId]);
     console.log("From the delete request-url", contactId);
     res.status(200).end();
