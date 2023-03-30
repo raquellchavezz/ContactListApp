@@ -83,7 +83,7 @@ app.put("/api//edit/contact/:contactId", async (req, res) => {
     updatedContact
   );
   // UPDATE contacts SET lastname = "something" WHERE id="16";
-  const query = `UPDATE contacts SET firstname=$1, lastname=$2, phonenumber=$3  email=$4 WHERE id=${contactId} RETURNING *`;
+  const query = `UPDATE contacts SET firstname=$1, lastname=$2, phonenumber=$3,  email=$4 WHERE id=${contactId} RETURNING *`;
   const values = [
     updatedContact.firstname,
     updatedContact.lastname,
