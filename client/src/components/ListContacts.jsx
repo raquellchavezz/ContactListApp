@@ -25,7 +25,7 @@ const ListContacts = () => {
         loadContacts(); 
     }, []); //this useEffect function will run whenever array of contacts changes, like side effect
 
-    const onSaveContacts= (newContact) => { //we're creating a function called onSaveContacts that'll take in a newContact as a parameter 
+    const onSaveContacts = (newContact) => { //we're creating a function called onSaveContacts that'll take in a newContact as a parameter 
         //console.log(newStudent, "From the parent - List of Students");
         setContacts((contacts) => [...contacts, newContact]); //we then want to use the setContacts function to update the state of contacts 
     }//passing it a func here thru the =>  
@@ -39,6 +39,7 @@ const ListContacts = () => {
     const updateContact= (savedContact) => {
         // console.log("Line 29 savedStudent", savedStudent);
         // This function should update the whole list of contacts- 
+        setContacts((contacts) => [...contacts, savedContact]);
         loadContacts();
     }
 
@@ -56,10 +57,15 @@ const ListContacts = () => {
     }
 
     // A function to handle the Update functionality, this is being passed to Contact.jsx
-    const onUpdate = (toUpdateContact) => {
-        console.log(toUpdateContact);
-        setEditingContact(toUpdateContact);
-
+    const onUpdate = (contact) => {
+        return fetch(`http://localhost:8080/api/edit/contact/${contact.id_contact}`,{
+                method: "PUT"
+            }).then((response) => {
+         //console.log(response);
+            if (response.ok) {
+            loadContacts();
+                }
+            })
     }
 
 
@@ -76,7 +82,12 @@ const ListContacts = () => {
                 })}
             </ul>
         </div>
-        <Home key={editingContact ? editingContact.id : null} onSaveContacts={onSaveContacts} editingContact={editingContact} onUpdateContact={updateContact} />
+        <Home key={editingContact ? editingContact.id : null} onSaveContacts={onSaveContacts} editingContact={editingContact} onUpdateContact={updateContact} /> {/*onUpdateContact is a calllback func*/}
+        {/*"key" prop is being set based on the condition of "editingContact" being truthy. If it is truthy, the key will be set to the ID of the "editingContact" object, otherwise it will be set to null.*/}
+        {/*onSaveContacts" prop is a function that will be called when the component wants to save some contact information, its defned above */}
+        {/*"editingContact" prop is an object that represents the contact that is currently being edited. This object will be passed to the "Home" component so that it can display the appropriate information.*/}
+       {/*"onUpdateContact" prop is a callback function that will be called when the "Home" component needs to update the contact information. */}
+       {/* rendering a "Home" component with some props passed to it that will allow it to display and edit contact information.*/}
         </div> //not sure about the onsavecontact(s)
     );
 }

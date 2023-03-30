@@ -5,8 +5,9 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
 // const Home =(props) => { //props holding all data points
 // props.onSaveContact,
 // props.editingContact
-// props.onUpdateContact 
-    
+// props.onUpdateContact --> coming from listContacts.jsx which is the parent of home, so we are passing in the functioon onUpdateContact thru a prop
+//onUpdateContact is a callback prop that is passed to a child component as a prop value.
+// The child component can then call this function, usually with some data or state changes, to notify the parent component of the update.
 // }
     // This is the original State with not initial contact 
     const [contact, setContact] = useState(editingContact || {
@@ -54,7 +55,7 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
 
     //A function to handle the post request
     const postContact = (newContact) => {
-        return fetch("http://localhost:8080/api/contacts", {
+        return fetch("http://localhost:8080/api/contact", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newContact),
@@ -71,18 +72,20 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
             });
     };
 
-    //A function to handle the post request
-    const putContact = (toEditContact) => {
-        return fetch(`http://localhost:8080/api/contacts/${toEditContact.id}`, {
+    //A function to handle the put request
+    const putContact = (toEditContact) => { //this func will take in some sort of value which is the contact we want to edit in the existing list of contacts
+        return fetch(`http://localhost:8080/api/edit/contact/${toEditContact.id}`, { //the front end will send a request to this url to update the contact using put method
+        //This URL is expected to be the endpoint of the server that handles the update operation. The toEditContact.id is used to specify the id of the contact that needs to be updated.    
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(toEditContact),
+            body: JSON.stringify(toEditContact), //The body of the request is the toEditContact object that has been passed as an argument to the function
+                    //JSON.stringify() method is used to convert the toEditContact object into a JSON string.
         })
-            .then((response) => {
-                return response.json();
+            .then((response) => { // then() method is used to handle the response from the server. 
+                return response.json(); //turn response to json format
             })
             .then((data) => {
-                onUpdateContact(data);
+                onUpdateContact(data);  //resulting data is then passed as an argument to the onUpdateContact() function which handles updating the contact list in the UI. 
                 //this line just for cleaning the form
                 clearForm();
             });
@@ -157,7 +160,7 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
                 label={`Are they in the current program?`}
             /> */}
             <Form.Group>
-            <Button type="submit" variant="outline-success">{contact.id ? "Edit Student" : "Add New Contact"}</Button>
+            <Button type="submit" variant="outline-success">{contact.id ? "Edit Contact" : "Add New Contact"}</Button>
             {contact.id ? <Button type="button" variant="outline-warning" onClick={clearForm}>Cancel</Button> : null}
             </Form.Group>
         </Form>

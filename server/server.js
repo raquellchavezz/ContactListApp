@@ -66,7 +66,7 @@ app.delete("/api/contacts/:contactId", async (req, res) => {
 });
 
 //A put request - Update a contact
-app.put("/api/contacts/:contactId", async (req, res) => {
+app.put("/api//edit/contact/:contactId", async (req, res) => {
   //console.log(req.params);
   //This will be the id that I want to find in the DB - the student to be updated
   const contactId = req.params.contactId;
@@ -87,7 +87,8 @@ app.put("/api/contacts/:contactId", async (req, res) => {
   const values = [
     updatedContact.firstname,
     updatedContact.lastname,
-    updatedContact.iscurrent,
+    updatedContact.phonenumber,
+    updatedContact.email,
   ];
   try {
     const updated = await db.query(query, values);
