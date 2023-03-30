@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 app.get("/api/contacts", async (req, res) => {
   try {
     const { rows: contacts } = await db.query("SELECT * FROM contacts");
+    console.log("Trying to list all contacts from query ", contacts);
     res.send(contacts);
   } catch (e) {
     return res.status(400).json({ e });

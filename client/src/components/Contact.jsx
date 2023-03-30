@@ -24,7 +24,7 @@ const onUpdate = (toUpdateContact) => { //passing in the toUpdateContact which i
     return (
         <Card>
             <Card.Body>
-            <Card.Title className = "card-title">  <ul><li> Full Name: {contact.firstname} {contact.lastname}</li>  <li> Phone Number:{contact.phonenumber}</li> <li> Email: {contact.email}</li> </ul></Card.Title>
+            <Card.Title className = "card-title">  <ul><li> Full Name: {contact.firstname} {contact.lastname}</li>  <li> Phone Number: {contact.phonenumber}</li> <li> Email: {contact.email}</li> </ul></Card.Title>
             <Button variant="outline-danger" onClick={()=>{onDelete(contact)}} style={{padding: '0.6em', marginRight:'0.9em'}}>Delete<ioicons.IoTrash/></Button>
             <Button variant="outline-info" onClick={()=>{onUpdate(contact)}} style={{padding: '0.6em'}}> Edit <ioicons.IoSync/></Button>
             </Card.Body>

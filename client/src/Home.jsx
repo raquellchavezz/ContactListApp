@@ -19,7 +19,7 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
     //create functions that handle the event of the user typing into the form
     const handleNameChange = (event) => {
         const firstname = event.target.value;
-        setContact((contact) => ({ ...contact, firstname }));
+        setContact((contact) => ({ ...contact, firstname })); //these must match the object names so firstname, lastname, etc
 
     };
 
@@ -30,8 +30,9 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
 
 
     const handlePhoneNumberChange = (event) => {
-        const phoneNumber = event.target.value;
-        setContact((contact) => ({ ...contact, phoneNumber}));
+        const phonenumber = event.target.value;
+        console.log(phonenumber);
+        setContact((contact) => ({ ...contact, phonenumber}));
     };
 
 
