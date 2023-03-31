@@ -11,6 +11,7 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
 // }
     // This is the original State with not initial contact 
     const [contact, setContact] = useState(editingContact || {
+        id_contact: 0, 
         firstname: "",
         lastname: "",
         phonenumber: "",
@@ -39,7 +40,7 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
 
     const handleEmailChange = (event) => {
         const email = event.target.value;
-        setContact((contact) => ({ ...contact,email}));
+        setContact((contact) => ({ ...contact, email}));
     };
 
 
@@ -74,9 +75,10 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
 
     //A function to handle the put request
     const putContact = (toEditContact) => { //this func will take in some sort of value which is the contact we want to edit in the existing list of contacts
-        return fetch(`http://localhost:8080/api/edit/contact/${toEditContact.id}`, { //the front end will send a request to this url to update the contact using put method
-        //This URL is expected to be the endpoint of the server that handles the update operation. The toEditContact.id is used to specify the id of the contact that needs to be updated.    
-            method: "PUT",
+        console.log(toEditContact);
+        return fetch(`http://localhost:8080/api/edit/contact/${toEditContact.id_contact}`, { //the front end will send a request to this url to update the contact using put method
+        //This URL is expected to be the endpoint of the server that handles the update operation. The toEditContact.id is used to specify the id of the contact that needs to be updated.        
+        method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(toEditContact), //The body of the request is the toEditContact object that has been passed as an argument to the function
                     //JSON.stringify() method is used to convert the toEditContact object into a JSON string.
@@ -95,7 +97,7 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
     //A function to handle the submit in both cases - Post and Put request!
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (contact.id) {
+        if (contact.id_contact) { //id now in scope
             putContact(contact); //editing 
         } else {
             postContact(contact); //adding a contact 
@@ -160,8 +162,8 @@ const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destru
                 label={`Are they in the current program?`}
             /> */}
             <Form.Group>
-            <Button type="submit" variant="outline-success">{contact.id ? "Edit Contact" : "Add New Contact"}</Button>
-            {contact.id ? <Button type="button" variant="outline-warning" onClick={clearForm}>Cancel</Button> : null}
+            <Button type="submit" variant="outline-success">{contact.id_contact ? "Edit Contact" : "Add New Contact"}</Button>
+            {contact.id_contact? <Button type="button" variant="outline-warning" onClick={clearForm}>Cancel</Button> : null}
             </Form.Group>
         </Form>
     );

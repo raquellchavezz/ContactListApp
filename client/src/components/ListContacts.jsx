@@ -6,26 +6,35 @@ import Contact from './Contact'; //change to contact, this will be a child of li
 
 const ListContacts = () => {
 
-    // this is my original state with an array of students 
+    // this is my original state with an array of contacts
     const [contacts, setContacts] = useState([]); // we are using a state for the contacts so that we can list them to the current most updated state
 
     //this is the state needed for the UpdateRequest for editing a contact (put method)
-    const [editingContact, setEditingContact] = useState(null)
+    const [editingContact, setEditingContact] = useState(null); //why not {}? 
+//setEditingContact helps us save current variable of editing Contact
 
+    //the function loadContacts uses fetch to make a GET request to http://localhost:8080/api/contacts endpoint of the backend server.
+    
     const loadContacts = () => {
         // A function to fetch the list of students that will be load anytime that list change
-        fetch("http://localhost:8080/api/contacts") //backend
-            .then((response) => response.json())
+        fetch("http://localhost:8080/api/contacts") //this is saying hey backend, I want to go here 
+        //fetch default is a get request
+        //once server/backend responds with data the first .then is executed
+            .then((response) => response.json())//when front end gets response will turn into json format
+            //use the json() method to extract the response body as a JSON object.
+          //json() method reads the body of the response which at first is an obj that reps the response of the network request
+          //^ so that does not return the actual data.. to extract the data from the response, we need to use one of the response body methods like json(), 
+          //and returns a promise that resolves with the result of parsing the body text as JSON
             .then((contacts) => {
                 setContacts(contacts); //using the setContacts func to set the contacts to most updated state and reflect that when we load the data 
-            });
+            }); //whatver got backend, saving that into contaact state
     }
 
     useEffect(() => { // a hook
         loadContacts(); 
     }, []); //this useEffect function will run whenever array of contacts changes, like side effect
 
-    const onSaveContacts = (newContact) => { //we're creating a function called onSaveContacts that'll take in a newContact as a parameter 
+    const onSaveContacts= (newContact) => { //we're creating a function called onSaveContacts that'll take in a newContact as a parameter 
         //console.log(newStudent, "From the parent - List of Students");
         setContacts((contacts) => [...contacts, newContact]); //we then want to use the setContacts function to update the state of contacts 
     }//passing it a func here thru the =>  
@@ -57,15 +66,16 @@ const ListContacts = () => {
     }
 
     // A function to handle the Update functionality, this is being passed to Contact.jsx
-    const onUpdate = (contact) => {
-        return fetch(`http://localhost:8080/api/edit/contact/${contact.id_contact}`,{
-                method: "PUT"
-            }).then((response) => {
-         //console.log(response);
-            if (response.ok) {
-            loadContacts();
-                }
-            })
+    const onUpdate = (toUpdateContact) => {
+        setEditingContact(toUpdateContact);
+        // return fetch(`http://localhost:8080/api/edit/contact/${toUpdateContact.id_contact}`,{
+        //         method: "PUT"
+        //     }).then((response) => {
+        //  //console.log(response);
+        //     if (response.ok) {
+        //     loadContacts();
+        //         }
+        //     })
     }
 
 
@@ -82,12 +92,12 @@ const ListContacts = () => {
                 })}
             </ul>
         </div>
-        <Home key={editingContact ? editingContact.id : null} onSaveContacts={onSaveContacts} editingContact={editingContact} onUpdateContact={updateContact} /> {/*onUpdateContact is a calllback func*/}
+        <Home key={editingContact ? editingContact.id_contact : null} onSaveContacts={onSaveContacts} editingContact={editingContact} onUpdateContact={updateContact} /> {/*onUpdateContact is a calllback func*/}
         {/*"key" prop is being set based on the condition of "editingContact" being truthy. If it is truthy, the key will be set to the ID of the "editingContact" object, otherwise it will be set to null.*/}
         {/*onSaveContacts" prop is a function that will be called when the component wants to save some contact information, its defned above */}
         {/*"editingContact" prop is an object that represents the contact that is currently being edited. This object will be passed to the "Home" component so that it can display the appropriate information.*/}
        {/*"onUpdateContact" prop is a callback function that will be called when the "Home" component needs to update the contact information. */}
-       {/* rendering a "Home" component with some props passed to it that will allow it to display and edit contact information.*/}
+       {/**/}
         </div> //not sure about the onsavecontact(s)
     );
 }
