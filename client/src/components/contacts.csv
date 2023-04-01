@@ -1,0 +1,9 @@
+insert into contacts (firstname, lastname, email, phonenumber) values ('Kelsey', 'Jewise', 'kjewise1@latimes.com', '839-972-7448');
+insert into contacts ( firstname, lastname, email, phonenumber) values ('Marshal', 'Harp', 'mharp2@japanpost.jp', '461-131-5148');
+insert into contacts ( firstname, lastname, email, phonenumber) values ('Reube', 'Albiston', 'ralbiston3@facebook.com', '355-119-3134');
+insert into contacts ( firstname, lastname, email, phonenumber) values ('Nathanial', 'Parffrey', 'nparffrey4@virginia.edu', '207-603-0101');
+insert into contacts ( firstname, lastname, email, phonenumber) values ('Avivah', 'Chippindale', 'achippindale5@stumbleupon.com', '775-365-1866');
+insert into contacts ( firstname, lastname, email, phonenumber) values ('Kennan', 'Orniz', 'korniz6@gravatar.com', '109-307-3479');
+insert into contacts ( firstname, lastname, email, phonenumber) values ('Cami', 'Downs', 'cdowns7@tripod.com', '102-220-6944');
+insert into contacts ( firstname, lastname, email, phonenumber) values ('Joceline', 'Gitthouse', 'jgitthouse8@tuttocitta.it', '348-381-8185');
+insert into contacts ( firstname, lastname, email, phonenumber) values ('Bevon', 'Icom', 'bicom9@cisco.com', '737-442-6556');

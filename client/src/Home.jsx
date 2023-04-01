@@ -1,58 +1,65 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Form } from "react-bootstrap" 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const MyForm = ({ onSaveStudent, editingStudent, onUpdateStudent }) => {
-
-    // This is the original State with not initial student 
-    const [student, setStudent] = useState(editingStudent || {
+const Home = ({ onSaveContacts, editingContact, onUpdateContact }) => { //destructuring props by listing keys in it
+// const Home =(props) => { //props holding all data points
+// props.onSaveContact,
+// props.editingContact
+// props.onUpdateContact --> coming from listContacts.jsx which is the parent of home, so we are passing in the functioon onUpdateContact thru a prop
+//onUpdateContact is a callback prop that is passed to a child component as a prop value.
+// The child component can then call this function, usually with some data or state changes, to notify the parent component of the update.
+// }
+    // This is the original State with not initial contact 
+    const [contact, setContact] = useState(editingContact || {
+        id_contact: 0, 
         firstname: "",
         lastname: "",
-        is_current: false
+        phonenumber: "",
+        email:"",
     });
 
     //create functions that handle the event of the user typing into the form
     const handleNameChange = (event) => {
         const firstname = event.target.value;
-        setStudent((student) => ({ ...student, firstname }));
+        setContact((contact) => ({ ...contact, firstname })); //these must match the object names so firstname, lastname, etc
 
     };
 
     const handleLastnameChange = (event) => {
         const lastname = event.target.value;
-        setStudent((student) => ({ ...student, lastname }));
+        setContact((contact) => ({ ...contact, lastname }));
     };
 
-    const handleCheckChange = (event) => {
-        const is_current = event.target.checked;
-        //console.log(iscurrent);
-        setStudent((student) => ({ ...student, is_current }));
+
+    const handlePhoneNumberChange = (event) => {
+        const phonenumber = event.target.value;
+        console.log(phonenumber);
+        setContact((contact) => ({ ...contact, phonenumber}));
     };
+
+
+    const handleEmailChange = (event) => {
+        const email = event.target.value;
+        setContact((contact) => ({ ...contact, email}));
+    };
+
+
+    // const handleCheckChange = (event) => {
+    //     const is_current = event.target.checked;
+    //     //console.log(iscurrent);
+    //     setContact((contact) => ({ ...contact, is_current }));
+    // };
 
     const clearForm = () => {
-        setStudent({ firstname: "", lastname: "", is_current: false })
+        setContact({ firstname: "", lastname: "", phonenumber: "", emaiL:"" })
     }
 
     //A function to handle the post request
-    const postStudent = (newStudent) => {
-        return fetch("http://localhost:8080/api/students", {
+    const postContact = (newContact) => {
+        return fetch("http://localhost:8080/api/contact", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newStudent),
+            body: JSON.stringify(newContact),
         })
             .then((response) => {
                 return response.json();
@@ -60,24 +67,27 @@ const MyForm = ({ onSaveStudent, editingStudent, onUpdateStudent }) => {
             .then((data) => {
                 //console.log("From the post ", data);
                 //I'm sending data to the List of Students (the parent) for updating the list
-                onSaveStudent(data);
+                onSaveContacts(data);
                 //this line just for cleaning the form
                 clearForm();
             });
     };
 
-    //A function to handle the post request
-    const putStudent = (toEditStudent) => {
-        return fetch(`http://localhost:8080/api/students/${toEditStudent.id}`, {
-            method: "PUT",
+    //A function to handle the put request
+    const putContact = (toEditContact) => { //this func will take in some sort of value which is the contact we want to edit in the existing list of contacts
+        console.log(toEditContact);
+        return fetch(`http://localhost:8080/api/edit/contact/${toEditContact.id_contact}`, { //the front end will send a request to this url to update the contact using put method
+        //This URL is expected to be the endpoint of the server that handles the update operation. The toEditContact.id is used to specify the id of the contact that needs to be updated.        
+        method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(toEditStudent),
+            body: JSON.stringify(toEditContact), //The body of the request is the toEditContact object that has been passed as an argument to the function
+                    //JSON.stringify() method is used to convert the toEditContact object into a JSON string.
         })
-            .then((response) => {
-                return response.json();
+            .then((response) => { // then() method is used to handle the response from the server. 
+                return response.json(); //turn response to json format
             })
             .then((data) => {
-                onUpdateStudent(data);
+                onUpdateContact(data);  //resulting data is then passed as an argument to the onUpdateContact() function which handles updating the contact list in the UI. 
                 //this line just for cleaning the form
                 clearForm();
             });
@@ -87,15 +97,15 @@ const MyForm = ({ onSaveStudent, editingStudent, onUpdateStudent }) => {
     //A function to handle the submit in both cases - Post and Put request!
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (student.id) {
-            putStudent(student);
+        if (contact.id_contact) { //id now in scope
+            putContact(contact); //editing 
         } else {
-            postStudent(student);
+            postContact(contact); //adding a contact 
         }
     };
 
     return (
-        <Form className='form-students' onSubmit={handleSubmit}>
+        <Form className='form-contacts' onSubmit={handleSubmit}>
             <Form.Group>
                 <Form.Label>First Name</Form.Label>
                 <input
@@ -103,7 +113,7 @@ const MyForm = ({ onSaveStudent, editingStudent, onUpdateStudent }) => {
                     id="add-user-name"
                     placeholder="First Name"
                     required
-                    value={student.firstname}
+                    value={contact.firstname}
                     onChange={handleNameChange}
                 />
             </Form.Group>
@@ -114,24 +124,50 @@ const MyForm = ({ onSaveStudent, editingStudent, onUpdateStudent }) => {
                     id="add-user-lastname"
                     placeholder="Last Name"
                     required
-                    value={student.lastname}
+                    value={contact.lastname}
                     onChange={handleLastnameChange}
                 />
             </Form.Group>
-            <Form.Check
+
+
+            <Form.Group>
+                <Form.Label>Phone number</Form.Label>
+                <input
+                    type="text"
+                    id="add-user-phonenumber"
+                    placeholder="555-555-5555"
+                    required
+                    value={contact.phonenumber}
+                    onChange={handlePhoneNumberChange}
+                />
+            </Form.Group>
+
+
+            <Form.Group>
+                <Form.Label>email</Form.Label>
+                <input
+                    type="text"
+                    id="add-user-email"
+                    placeholder="abcd123@gmail.com"
+                    required
+                    value={contact.email}
+                    onChange={handleEmailChange}
+                />
+            </Form.Group>
+            {/* <Form.Check
                 type={'checkbox'}
                 id={`isCurrent`}
-                checked={student.is_current}
+                // checked={contact.is_current}
                 onChange={handleCheckChange}
                 label={`Are they in the current program?`}
-            />
+            /> */}
             <Form.Group>
-            <Button type="submit" variant="outline-success">{student.id ? "Edit Student" : "Add Student"}</Button>
-            {student.id ? <Button type="button" variant="outline-warning" onClick={clearForm}>Cancel</Button> : null}
+            <Button type="submit" variant="outline-success">{contact.id_contact ? "Edit Contact" : "Add New Contact"}</Button>
+            {contact.id_contact? <Button type="button" variant="outline-warning" onClick={clearForm}>Cancel</Button> : null}
             </Form.Group>
         </Form>
     );
 };
 
 
-export default MyForm
+export default Home;
